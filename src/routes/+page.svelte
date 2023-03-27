@@ -1,28 +1,40 @@
-<script>
-	const appName = 'VG NyhetsQuiz';
+<script lang="ts">
 	import { quizQuestions } from '../utils/quizQuestions';
-	import { onMount } from 'svelte';
 
-	let currentQuestionIndex = 0;
+	const appName = 'VG NyhetsQuiz';
+
+	let isAnswered = new Array(quizQuestions.length).fill(false);
 	let currentScore = 0;
+	let currentQuestionIndex = 0;
 
-	function handleAnswerSelect(answer) {
+	$: isAnswered, console.log(isAnswered);
+	$: currentScore, console.log(currentScore);
+
+	function handleAnswerSelect(answerIndex: number, questionIndex: number) {
+		if (isAnswered[questionIndex]) {
+			return;
+		}
+
+		const answer = quizQuestions[questionIndex].answers[answerIndex];
+
 		if (answer.isCorrect) {
 			currentScore++;
 		}
 
-		if (currentQuestionIndex < quizQuestions.length - 1) {
-			currentQuestionIndex++;
-		} else {
-			alert(`You scored ${currentScore} out of ${quizQuestions.length}!`);
-		}
+		isAnswered[questionIndex] = true;
+		const buttons: NodeListOf<HTMLButtonElement> = document.querySelectorAll(
+			`.question-${questionIndex} button`
+		);
+		buttons.forEach((button) => (button.disabled = true));
 	}
 
-	onMount(() => {
-		quizQuestions.forEach((question) => {
-			question.answers.sort(() => Math.random() - 0.5);
-		});
+	quizQuestions.forEach((question) => {
+		question.answers.sort(() => Math.random() - 0.5);
 	});
+
+	function nextQuestion(questionIndex: number) {
+		currentQuestionIndex = questionIndex + 1;
+	}
 </script>
 
 <svelte:head>
@@ -34,11 +46,19 @@
 <h1>{appName}</h1>
 <div>
 	{#if currentQuestionIndex < quizQuestions.length}
-		<p>{quizQuestions[currentQuestionIndex].question}</p>
-		{#each quizQuestions[currentQuestionIndex].answers as answer}
-			<button on:click={() => handleAnswerSelect(answer)}>
-				{answer.text}
-			</button>
-		{/each}
+		<div class="question question-{currentQuestionIndex}">
+			<p>{quizQuestions[currentQuestionIndex].question}</p>
+			{#each quizQuestions[currentQuestionIndex].answers as answer, answerIndex}
+				<button
+					on:click={() => handleAnswerSelect(answerIndex, currentQuestionIndex)}
+					disabled={isAnswered[currentQuestionIndex]}
+				>
+					{answer.text}
+				</button>
+			{/each}
+		</div>
+		<button on:click={() => nextQuestion(currentQuestionIndex)}> neste</button>
 	{/if}
 </div>
+
+<p>Your score: {currentScore} out of {quizQuestions.length}</p>
