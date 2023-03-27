@@ -8,7 +8,10 @@
 	export let currentQuestionIndex: number;
 </script>
 
-<div class="quiz">
+<div class="bg-white rounded-xl px-4 py-5 mx-4">
+	<p class="text-xs font-light">
+		Spørsmål {currentQuestionIndex + 1}/{quizQuestions.length}
+	</p>
 	<Question
 		question={quizQuestions[currentQuestionIndex]}
 		{handleAnswerSelect}
