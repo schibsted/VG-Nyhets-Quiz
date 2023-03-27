@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { IsAnswered } from '../types/QuizQuestions';
 	import { quizQuestions } from '../utils/quizQuestions';
+	import ProgressBar from './ProgressBar.svelte';
 	import Quiz from './Quiz.svelte';
 	import Score from './Score.svelte';
 
@@ -9,9 +10,6 @@
 	let isAnswered: IsAnswered = new Array(quizQuestions.length).fill(false);
 	let currentScore = 0;
 	let currentQuestionIndex = 0;
-
-	$: isAnswered, console.log(isAnswered);
-	$: currentScore, console.log(currentScore);
 
 	quizQuestions.forEach((question) => {
 		question.answers.sort(() => Math.random() - 0.5);
@@ -42,6 +40,7 @@
 	</title>
 </svelte:head>
 
+<ProgressBar value={(currentQuestionIndex / quizQuestions.length) * 100} />
 {#if currentQuestionIndex < quizQuestions.length}
 	<Quiz {quizQuestions} {currentQuestionIndex} {handleAnswerSelect} {isAnswered} />
 	<button
