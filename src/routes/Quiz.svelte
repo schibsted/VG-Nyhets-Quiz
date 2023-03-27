@@ -8,7 +8,7 @@
 	export let currentQuestionIndex: number;
 </script>
 
-<div class="bg-white rounded-xl px-4 py-5 mx-4">
+<div class="bg-white rounded-xl px-4 py-5">
 	<p class="text-xs font-light">
 		Spørsmål {currentQuestionIndex + 1}/{quizQuestions.length}
 	</p>
