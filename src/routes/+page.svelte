@@ -1,39 +1,38 @@
 <script lang="ts">
+	import type { IsAnswered } from '../types/QuizQuestions';
 	import { quizQuestions } from '../utils/quizQuestions';
+	import Quiz from './Quiz.svelte';
+	import Score from './Score.svelte';
 
 	const appName = 'VG NyhetsQuiz';
 
-	let isAnswered = new Array(quizQuestions.length).fill(false);
+	let isAnswered: IsAnswered = new Array(quizQuestions.length).fill(false);
 	let currentScore = 0;
 	let currentQuestionIndex = 0;
 
 	$: isAnswered, console.log(isAnswered);
 	$: currentScore, console.log(currentScore);
 
-	function handleAnswerSelect(answerIndex: number, questionIndex: number) {
-		if (isAnswered[questionIndex]) {
+	quizQuestions.forEach((question) => {
+		question.answers.sort(() => Math.random() - 0.5);
+	});
+
+	function handleAnswerSelect(answerIndex: number) {
+		if (isAnswered[currentQuestionIndex]) {
 			return;
 		}
 
-		const answer = quizQuestions[questionIndex].answers[answerIndex];
+		const answer = quizQuestions[currentQuestionIndex].answers[answerIndex];
 
 		if (answer.isCorrect) {
 			currentScore++;
 		}
 
-		isAnswered[questionIndex] = true;
-		const buttons: NodeListOf<HTMLButtonElement> = document.querySelectorAll(
-			`.question-${questionIndex} button`
-		);
-		buttons.forEach((button) => (button.disabled = true));
+		isAnswered[currentQuestionIndex] = true;
 	}
 
-	quizQuestions.forEach((question) => {
-		question.answers.sort(() => Math.random() - 0.5);
-	});
-
-	function nextQuestion(questionIndex: number) {
-		currentQuestionIndex = questionIndex + 1;
+	function nextQuestion() {
+		currentQuestionIndex++;
 	}
 </script>
 
@@ -43,22 +42,14 @@
 	</title>
 </svelte:head>
 
-<h1>{appName}</h1>
-<div>
-	{#if currentQuestionIndex < quizQuestions.length}
-		<div class="question question-{currentQuestionIndex}">
-			<p>{quizQuestions[currentQuestionIndex].question}</p>
-			{#each quizQuestions[currentQuestionIndex].answers as answer, answerIndex}
-				<button
-					on:click={() => handleAnswerSelect(answerIndex, currentQuestionIndex)}
-					disabled={isAnswered[currentQuestionIndex]}
-				>
-					{answer.text}
-				</button>
-			{/each}
-		</div>
-		<button on:click={() => nextQuestion(currentQuestionIndex)}> neste</button>
-	{/if}
-</div>
+{#if currentQuestionIndex < quizQuestions.length}
+	<Quiz {quizQuestions} {currentQuestionIndex} {handleAnswerSelect} {isAnswered} />
+	<button
+		class="rounded-md bg-indigo-500 py-2 px-3 text-sm font-semibold text-white shadow-sm"
+		on:click={() => nextQuestion()}
+	>
+		Neste
+	</button>
+{/if}
 
-<p>Your score: {currentScore} out of {quizQuestions.length}</p>
+<Score {currentScore} quizLength={quizQuestions.length} />
