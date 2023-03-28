@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { UserAnswers } from '../types/QuizQuestions';
-	import { quizQuestions } from '../utils/quizQuestions';
+	import { quizQuestions } from '../utils/quizQuestion';
 	import NextButton from './NextButton.svelte';
 	import ProgressBar from './ProgressBar.svelte';
 	import Quiz from './Quiz.svelte';
@@ -8,12 +8,14 @@
 
 	const appName = 'VG NyhetsQuiz';
 
-	let userAnswers: UserAnswers = new Array(quizQuestions.length).fill(null);
+	const quizQuestionsData = quizQuestions.data;
+
+	let userAnswers: UserAnswers = new Array(quizQuestionsData.length).fill(null);
 	let currentScore = 0;
 	let currentQuestionIndex = 0;
 
-	quizQuestions.forEach((question) => {
-		question.answers.sort(() => Math.random() - 0.5);
+	quizQuestionsData.forEach((question) => {
+		question.attributes.options.sort(() => Math.random() - 0.5);
 	});
 
 	function handleAnswerSelect(answerIndex: number) {
@@ -21,9 +23,9 @@
 			return;
 		}
 
-		const answer = quizQuestions[currentQuestionIndex].answers[answerIndex];
+		const answer = quizQuestionsData[currentQuestionIndex].attributes.options[answerIndex];
 
-		if (answer.isCorrect) {
+		if (answer === quizQuestionsData[currentQuestionIndex].attributes.correct_answer) {
 			currentScore++;
 		}
 
@@ -41,14 +43,19 @@
 	</title>
 </svelte:head>
 
-<ProgressBar value={(currentQuestionIndex / quizQuestions.length) * 100} />
-{#if currentQuestionIndex < quizQuestions.length}
-	<Quiz {quizQuestions} {currentQuestionIndex} {handleAnswerSelect} {userAnswers} />
+<ProgressBar value={(currentQuestionIndex / quizQuestionsData.length) * 100} />
+{#if currentQuestionIndex < quizQuestionsData.length}
+	<Quiz
+		quizQuestions={quizQuestionsData}
+		{currentQuestionIndex}
+		{handleAnswerSelect}
+		{userAnswers}
+	/>
 	<NextButton
 		handleClick={() => nextQuestion()}
 		{currentQuestionIndex}
-		totalAmountQuestions={quizQuestions.length}
+		totalAmountQuestions={quizQuestionsData.length}
 	/>
 {/if}
 
-<Score {currentScore} quizLength={quizQuestions.length} />
+<Score {currentScore} quizLength={quizQuestionsData.length} />

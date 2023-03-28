@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { QuizQuestinons, UserAnswers } from '../types/QuizQuestions';
+	import type { QuizQuestinonsData, UserAnswers } from '../types/QuizQuestions';
 	import Question from './Question.svelte';
 
-	export let quizQuestions: QuizQuestinons;
+	export let quizQuestions: QuizQuestinonsData[];
 	export let handleAnswerSelect: (answerIndex: number) => void;
 	export let userAnswers: UserAnswers;
 	export let currentQuestionIndex: number;
