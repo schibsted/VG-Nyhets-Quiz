@@ -2,6 +2,6 @@
 	import '../app.css';
 </script>
 
-<main class="bg-[#EFEFF4] px-4 min-h-[100svh]">
+<main class="px-4 min-h-[100svh] max-w-lg mx-auto">
 	<slot />
 </main>
