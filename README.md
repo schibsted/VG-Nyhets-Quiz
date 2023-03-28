@@ -1,38 +1,18 @@
-# create-svelte
+# VG NyhetsQuiz
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+VG NyhetsQuiz is a simple quiz application built with SvelteKit and Tailwind CSS. Users can test their knowledge by answering multiple-choice questions related to this week's news image. The app displays one question at a time.
 
-## Creating a project
+## Features
 
-If you're seeing this, you've probably already done this step. Congrats!
+- Multiple-choice questions with randomized answer options
+- Progress bar to indicate the user's progress through the quiz
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+## File Structure
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+The project is organized into the following directories:
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+- `src`: Contains the main application files, including Svelte components, TypeScript types, and utility files.
+  - `routes`: Contains the main Svelte components that make up the application's interface, such as the Quiz, Question, and Score components.
+  - `types`: Contains TypeScript type definitions for the quiz questions.
+  - `utils`: Contains utility files, such as the quizQuestions.ts file which provides the quiz data.
+- `static`: Contains static assets like the favicon.
