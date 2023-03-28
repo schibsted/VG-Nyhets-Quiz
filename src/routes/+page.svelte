@@ -44,7 +44,11 @@
 <ProgressBar value={(currentQuestionIndex / quizQuestions.length) * 100} />
 {#if currentQuestionIndex < quizQuestions.length}
 	<Quiz {quizQuestions} {currentQuestionIndex} {handleAnswerSelect} {isAnswered} />
-	<NextButton handleClick={() => nextQuestion()} />
+	<NextButton
+		handleClick={() => nextQuestion()}
+		{currentQuestionIndex}
+		totalAmountQuestions={quizQuestions.length}
+	/>
 {/if}
 
 <Score {currentScore} quizLength={quizQuestions.length} />
