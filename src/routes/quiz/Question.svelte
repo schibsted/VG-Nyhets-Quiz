@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { QuizQuestinonsData, UserAnswer } from '../types/QuizQuestions';
-	import CheckmarkIcon from './Icons/CheckmarkIcon.svelte';
+	import type { QuizQuestinonsData, UserAnswer } from '../../types/QuizQuestions';
+	import CheckmarkIcon from '../Icons/CheckmarkIcon.svelte';
 
 	export let question: QuizQuestinonsData;
 	export let handleAnswerSelect: (answerIndex: number) => void;

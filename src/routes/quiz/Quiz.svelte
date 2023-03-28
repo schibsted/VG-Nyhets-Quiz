@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { QuizQuestinonsData, UserAnswers } from '../types/QuizQuestions';
+	import type { QuizQuestinonsData, UserAnswers } from '../../types/QuizQuestions';
 	import Question from './Question.svelte';
 
 	export let quizQuestions: QuizQuestinonsData[];

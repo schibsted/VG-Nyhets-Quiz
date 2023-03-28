@@ -1,61 +1,22 @@
-<script lang="ts">
-	import type { UserAnswers } from '../types/QuizQuestions';
-	import { quizQuestions } from '../utils/quizQuestion';
-	import NextButton from './NextButton.svelte';
-	import ProgressBar from './ProgressBar.svelte';
-	import Quiz from './Quiz.svelte';
-	import Score from './Score.svelte';
-
-	const appName = 'VG NyhetsQuiz';
-
-	const quizQuestionsData = quizQuestions.data;
-
-	let userAnswers: UserAnswers = new Array(quizQuestionsData.length).fill(null);
-	let currentScore = 0;
-	let currentQuestionIndex = 0;
-
-	quizQuestionsData.forEach((question) => {
-		question.attributes.options.sort(() => Math.random() - 0.5);
-	});
-
-	function handleAnswerSelect(answerIndex: number) {
-		if (userAnswers[currentQuestionIndex] !== null) {
-			return;
-		}
-
-		const answer = quizQuestionsData[currentQuestionIndex].attributes.options[answerIndex];
-
-		if (answer === quizQuestionsData[currentQuestionIndex].attributes.correct_answer) {
-			currentScore++;
-		}
-
-		userAnswers[currentQuestionIndex] = answerIndex;
-	}
-
-	function nextQuestion() {
-		currentQuestionIndex++;
-	}
-</script>
-
-<svelte:head>
-	<title>
-		{appName}
-	</title>
-</svelte:head>
-
-<ProgressBar value={(currentQuestionIndex / quizQuestionsData.length) * 100} />
-{#if currentQuestionIndex < quizQuestionsData.length}
-	<Quiz
-		quizQuestions={quizQuestionsData}
-		{currentQuestionIndex}
-		{handleAnswerSelect}
-		{userAnswers}
-	/>
-	<NextButton
-		handleClick={() => nextQuestion()}
-		{currentQuestionIndex}
-		totalAmountQuestions={quizQuestionsData.length}
-	/>
-{/if}
-
-<Score {currentScore} quizLength={quizQuestionsData.length} />
+<section class="px-2">
+	<h1 class="pt-8 text-3xl font-bold mb-6">VG NyhetsQuiz</h1>
+	<div class="grid grid-cols-2 gap-4">
+		<a href="/quiz" class="grid col-span-2 bg-white shadow-lg rounded-xl p-4">
+			<h2 class="text-xl font-black text-[#d00000]">Ukens quiz</h2>
+			<p class="mb-2 text-sm">Test your knowledge of this week's news with our exciting quiz!</p>
+			<span
+				class="bg-[#d00] text-white text-sm flex flex-row justify-self-start py-1 px-3 rounded-full"
+			>
+				Start Quiz
+			</span>
+		</a>
+		<a href="/quiz" class="bg-white shadow-lg rounded-xl p-4">
+			<h2 class="text-xl font-black text-[#d00000]">Uke 15</h2>
+			<p class="text-sm">Challenge yourself with another set of questions from this week's news!</p>
+		</a>
+		<a href="/quiz" class="bg-white shadow-lg rounded-xl p-4">
+			<h2 class="text-xl font-black text-[#d00000]">Uke 16</h2>
+			<p class="text-sm">Dive into more news trivia with our third quiz of the week!</p>
+		</a>
+	</div>
+</section>
