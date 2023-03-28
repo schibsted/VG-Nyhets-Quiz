@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type { IsAnswered, QuizQuestinons } from '../types/QuizQuestions';
+	import type { QuizQuestinons, UserAnswers } from '../types/QuizQuestions';
 	import Question from './Question.svelte';
 
 	export let quizQuestions: QuizQuestinons;
 	export let handleAnswerSelect: (answerIndex: number) => void;
-	export let isAnswered: IsAnswered;
+	export let userAnswers: UserAnswers;
 	export let currentQuestionIndex: number;
 </script>
 
@@ -15,6 +15,7 @@
 	<Question
 		question={quizQuestions[currentQuestionIndex]}
 		{handleAnswerSelect}
-		isAnswered={isAnswered[currentQuestionIndex]}
+		isAnswered={userAnswers[currentQuestionIndex] !== null}
+		userAnswer={userAnswers[currentQuestionIndex]}
 	/>
 </div>

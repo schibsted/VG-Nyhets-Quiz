@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { IsAnswered } from '../types/QuizQuestions';
+	import type { UserAnswers } from '../types/QuizQuestions';
 	import { quizQuestions } from '../utils/quizQuestions';
 	import NextButton from './NextButton.svelte';
 	import ProgressBar from './ProgressBar.svelte';
@@ -8,7 +8,7 @@
 
 	const appName = 'VG NyhetsQuiz';
 
-	let isAnswered: IsAnswered = new Array(quizQuestions.length).fill(false);
+	let userAnswers: UserAnswers = new Array(quizQuestions.length).fill(null);
 	let currentScore = 0;
 	let currentQuestionIndex = 0;
 
@@ -17,7 +17,7 @@
 	});
 
 	function handleAnswerSelect(answerIndex: number) {
-		if (isAnswered[currentQuestionIndex]) {
+		if (userAnswers[currentQuestionIndex] !== null) {
 			return;
 		}
 
@@ -27,7 +27,7 @@
 			currentScore++;
 		}
 
-		isAnswered[currentQuestionIndex] = true;
+		userAnswers[currentQuestionIndex] = answerIndex;
 	}
 
 	function nextQuestion() {
@@ -43,7 +43,7 @@
 
 <ProgressBar value={(currentQuestionIndex / quizQuestions.length) * 100} />
 {#if currentQuestionIndex < quizQuestions.length}
-	<Quiz {quizQuestions} {currentQuestionIndex} {handleAnswerSelect} {isAnswered} />
+	<Quiz {quizQuestions} {currentQuestionIndex} {handleAnswerSelect} {userAnswers} />
 	<NextButton
 		handleClick={() => nextQuestion()}
 		{currentQuestionIndex}

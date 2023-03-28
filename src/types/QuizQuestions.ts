@@ -1,4 +1,6 @@
-export type IsAnswered = boolean[];
+export type UserAnswers = UserAnswer[];
+
+export type UserAnswer = number | null;
 
 export type QuizQuestinons = QuizQuestion[];
 
@@ -10,4 +12,5 @@ export interface QuizQuestion {
 interface Answer {
 	text: string;
 	isCorrect: boolean;
+	id: number;
 }
